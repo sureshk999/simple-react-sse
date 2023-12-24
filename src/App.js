@@ -1,25 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from 'react';
 
-function App() {
+export default function App() {
+  const [messages, setMessages] = useState([]);
+
+  useEffect(() => {
+    const eventSource = new EventSource('http://localhost:1000/events');
+    eventSource.onmessage = (event) => {
+      const message = event.data;
+      setMessages((prevMessages) => [...prevMessages, message]);
+    };
+    eventSource.onerror = () => {
+      eventSource.close();
+    };
+
+    return () => {
+      eventSource.close();
+    };
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>Test SSE</h1>
+      <h3>if this is working, you should see messages below</h3>
+      {messages.map((msg, index) => (
+        <p key={index}>{msg}</p>
+      ))}
     </div>
   );
 }
-
-export default App;
