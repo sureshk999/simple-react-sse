@@ -4,7 +4,7 @@ export default function App() {
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
-    const eventSource = new EventSource('http://localhost:3500/events');
+    const eventSource = new EventSource('http://localhost:3005/events');
     eventSource.onmessage = (event) => {
       const message = event.data;
       setMessages((prevMessages) => [...prevMessages, message]);
