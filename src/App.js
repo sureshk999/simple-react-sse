@@ -10,7 +10,7 @@ export default function App() {
       setMessages((prevMessages) => [...prevMessages, message]);
     };
     eventSource.onerror = () => {
-      eventSource.close();
+      eventSource.close(); 
     };
 
     return () => {
